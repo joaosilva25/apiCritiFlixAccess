@@ -12,7 +12,7 @@ export const registerUser=async(res:Response,userName:string,email:string,passwo
     if(!userExists) {
         try {
             const createUser = await users.create({userName:userName,email:email,password:hashPass})
-            res.json({user:createUser})
+            res.json({mensage:'OK'})
         }
         catch (error) {
             res.json({error:"Erro na criação do usuário"})
