@@ -30,7 +30,7 @@ export const loginUser=async(res:Response,email:string,password:string)=> {
         if(userExists) {
             const paswordCompare=await bcrypt.compare(password,userExists.password)
             if(paswordCompare) {
-                res.json({userExists})
+                res.json({userExists,message:"OK"})
             }
             else {
                 res.json({message:'Senha incorreta'})
