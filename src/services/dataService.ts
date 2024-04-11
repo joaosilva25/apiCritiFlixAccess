@@ -30,7 +30,7 @@ export const loginUser=async(res:Response,email:string,password:string)=> {
         if(userExists) {
             const paswordCompare=await bcrypt.compare(password,userExists.password)
             if(paswordCompare) {
-                res.json({message:'Usuário logado'})
+                res.json({userExists})
             }
             else {
                 res.json({message:'Senha incorreta'})
@@ -42,5 +42,32 @@ export const loginUser=async(res:Response,email:string,password:string)=> {
     }
     catch(error) {
         console.log({message:'Erro inesperado com login'})
+    }
+}
+
+export const movieDataSave=async(res:Response,email:string,movieName:string,movieImage:string)=> {
+    const userExists= await users.findOne({email:email})
+
+    if(userExists) {
+        const movieAlreadySaved=await users.findOne({movieTitle:movieName,movieImage})
+
+        if(!movieAlreadySaved) {
+            const saveMovieList=await userExists.updateOne({
+                email:email,
+                $push: {
+                    'myList.movies.movieTitle':movieName,
+                    'myList.movies.movieImage':movieImage
+                }
+            })
+            if(saveMovieList) {
+                res.json({message:'Salvo nos favoritos'})
+            }
+        }
+        else {
+            res.json({message:"Já salvo na lista de favoritos"})
+        }
+    }
+    else {
+        res.json({message:"Usuário não existe"})
     }
 }

@@ -4,12 +4,24 @@ type user= {
     userName: string,
     email: string,
     password: string
+    myList: {
+        movies:{
+            movieTitle:string[],
+            movieImage:string[]
+        },
+    }
 }
 
 const schema= new Schema<user>({
     userName:String,
     email:String,
-    password:String
+    password:String,
+    myList: {
+        movies: {
+            movieTitle:[String],
+            movieImage:[String]
+        }
+    }
 })
 
 const modelName:string= 'users'
