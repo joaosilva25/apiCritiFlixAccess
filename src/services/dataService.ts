@@ -96,6 +96,6 @@ export const userShow=async(res:Response,email:string)=> {
         }
     }
     catch (error) {
-        res.json({error})
+        res.json({message:'Erro inesperado'})
     }
 }
