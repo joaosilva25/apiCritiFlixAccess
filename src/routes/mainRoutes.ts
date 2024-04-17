@@ -10,7 +10,7 @@ const route=Router();
 route.post('/register', RegisterController.createNewUser)
 route.post('/login',LoginController.userLogin)
 route.put('/myList',FavoriteListController.favoriteList)
-route.get('/userData',UserDataController.userData)
+route.get('/userData/:email',UserDataController.userData)
 
 
 export default route
