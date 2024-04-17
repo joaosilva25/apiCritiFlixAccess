@@ -3,7 +3,7 @@ import { userShow } from '../services/dataService'
 
 
 export const userData=async(req:Request,res:Response)=> {
-    const {email}=req.body
+    let email:string=req.params.email
 
     if(email) {
         await userShow(res,email)
