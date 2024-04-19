@@ -53,25 +53,24 @@ export const loginUser=async(res:Response,email:string,password:string)=> {
 export const movieDataSave=async(res:Response,email:string,movieName:string,movieImage:string)=> {
     try {
         const userExists= await users.findOne({email:email})
-
+        
         if(userExists) {
-            const movieAlreadySaved=await users.findOne({movieTitle:movieName,movieImage})
-
-            if(!movieAlreadySaved) {
-                const saveMovieList=await userExists.updateOne({
-                    email:email,
-                    $push: {
-                        'myList.movies.movieTitle':movieName,
-                        'myList.movies.movieImage':movieImage
+            const movieAlreadyInDB=await users.findOne({"myList.movies.movieTitle": movieName,"myList.movies.movieImage": movieImage})
+                if(!movieAlreadyInDB) {
+                    const saveMovieList=await userExists.updateOne({
+                        email:email,
+                        $push: {
+                            'myList.movies.movieTitle':movieName,
+                            'myList.movies.movieImage':movieImage
+                        }
+                    })
+                    if (saveMovieList) {
+                        return res.json({message:'Salvo nos favoritos'})
                     }
-                })
-                if(saveMovieList) {
-                    res.json({message:'Salvo nos favoritos'})
                 }
-            }
-            else {
-                res.json({message:"Já salvo na lista de favoritos"})
-            }
+                else {
+                    return res.json({message:"Já salvo na lista de favoritos"})
+                }
         }
         else {
             res.json({message:"Usuário não existe"})
