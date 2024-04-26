@@ -60,8 +60,8 @@ export const movieDataSave=async(res:Response,email:string,movieName:string,movi
                     const saveMovieList=await userExists.updateOne({
                         email:email,
                         $push: {
-                            'myList.movies.movieTitle':movieName,
-                            'myList.movies.movieImage':movieImage,
+                            'myList.movies.movieTitle': movieName,
+                            'myList.movies.movieImage': movieImage,
                             'myList.movies.movieGenres':movieGenres
                         }
                     })
