@@ -50,18 +50,19 @@ export const loginUser=async(res:Response,email:string,password:string)=> {
     }
 }
 
-export const movieDataSave=async(res:Response,email:string,movieName:string,movieImage:string)=> {
+export const movieDataSave=async(res:Response,email:string,movieName:string,movieImage:string,movieGenres:string)=> {
     try {
         const userExists= await users.findOne({email:email})
         
         if(userExists) {
-            const movieAlreadyInDB=await users.findOne({"myList.movies.movieTitle": movieName,"myList.movies.movieImage": movieImage})
+            const movieAlreadyInDB=await users.findOne({"myList.movies.movieTitle": movieName,"myList.movies.movieImage": movieImage, "myList.movies.movieGenres":movieGenres})
                 if(!movieAlreadyInDB) {
                     const saveMovieList=await userExists.updateOne({
                         email:email,
                         $push: {
                             'myList.movies.movieTitle':movieName,
-                            'myList.movies.movieImage':movieImage
+                            'myList.movies.movieImage':movieImage,
+                            'myList.movies.movieGenres':movieGenres
                         }
                     })
                     if (saveMovieList) {
