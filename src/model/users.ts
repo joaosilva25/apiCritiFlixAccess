@@ -8,6 +8,7 @@ type user= {
         movies:{
             movieTitle:string[],
             movieImage:string[]
+            movieGenres:string[]
         },
     }
 }
@@ -19,7 +20,8 @@ const schema= new Schema<user>({
     myList: {
         movies: {
             movieTitle:[String],
-            movieImage:[String]
+            movieImage:[String],
+            movieGenres:[String]
         }
     }
 })
