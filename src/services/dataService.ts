@@ -62,9 +62,7 @@ export const movieDataSave=async(res:Response,email:string,movieName:string,movi
                         $push: {
                             'myList.movies.movieTitle': movieName,
                             'myList.movies.movieImage': movieImage,
-                            $addToSet: {
-                                'myList.movies.movieGenres':movieGenres
-                            }
+                            'myList.movies.movieGenres':movieGenres     
                         }
                     })
                     if (saveMovieList) {
