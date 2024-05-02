@@ -1,29 +1,33 @@
 import { Schema,model,connection } from "mongoose";
 
+interface Movie {
+    title:string;
+    poster:string,
+    overview:string,
+    genre:string,
+    trailer?:string
+    dateRelease:string,
+}
+
 type user= {
     userName: string,
     email: string,
     password: string
-    myList: {
-        movies:{
-            movieTitle:string[],
-            movieImage:string[]
-            movieGenres:string[]
-        },
-    }
+    myList:Movie[]
 }
 
 const schema= new Schema<user>({
     userName:String,
     email:String,
     password:String,
-    myList: {
-        movies: {
-            movieTitle:[String],
-            movieImage:[String],
-            movieGenres:[String]
-        }
-    }
+    myList: [ {
+        title: { type: String, required: true },
+        poster: { type: String, required: true },
+        overview: { type: String, required: true },
+        genre: { type: String, required: true },
+        trailer: { type: String },
+        dateRelease: { type: String, required: true },
+    }]
 })
 
 const modelName:string= 'users'

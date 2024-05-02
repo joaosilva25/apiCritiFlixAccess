@@ -50,21 +50,40 @@ export const loginUser=async(res:Response,email:string,password:string)=> {
     }
 }
 
-export const movieDataSave=async(res:Response,email:string,movieName:string,movieImage:string,movieGenres:string)=> {
+export const movieDataSave=async(res:Response,email:string,movieName:string,movieImage:string,overview:string,movieGenres:string,trailer:string,releaseDate:string)=> {
     try {
         const userExists= await users.findOne({email:email})
         
         if(userExists) {
-            const movieAlreadyInDB=await users.findOne({"myList.movies.movieTitle": movieName,"myList.movies.movieImage": movieImage, "myList.movies.movieGenres":movieGenres})
+            const movieAlreadyInDB=await users.findOne({  
+                myList: {
+                    $elemMatch: {
+                        title: movieName,
+                        poster: movieImage,
+                        overview: overview,
+                        genre: movieGenres,
+                        trailer: trailer,
+                        dateRelease: releaseDate,
+                    }
+                }
+            })
                 if(!movieAlreadyInDB) {
-                    const saveMovieList=await userExists.updateOne({
-                        email:email,
-                        $push: {
-                            'myList.movies.movieTitle': movieName,
-                            'myList.movies.movieImage': movieImage,
-                            'myList.movies.movieGenres':movieGenres     
+                    const saveMovieList=await users.updateOne(
+                        {email:email}, 
+                        {
+                            $push: {
+                                myList: {
+                                title: movieName,
+                                poster: movieImage,
+                                overview: overview,
+                                genre: movieGenres,
+                                trailer: trailer,
+                                dateRelease: releaseDate,
+                                }
+                            }
                         }
-                    })
+                )
+                    
                     if (saveMovieList) {
                         return res.json({message:'Salvo nos favoritos'})
                     }
