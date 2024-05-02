@@ -5,7 +5,7 @@ interface Movie {
     poster:string,
     overview:string,
     genre:string,
-    trailer?:string
+    id:string
     dateRelease:string,
 }
 
@@ -25,7 +25,7 @@ const schema= new Schema<user>({
         poster: { type: String, required: true },
         overview: { type: String, required: true },
         genre: { type: String, required: true },
-        trailer: { type: String },
+        id: { type: String ,required: true},
         dateRelease: { type: String, required: true },
     }]
 })
