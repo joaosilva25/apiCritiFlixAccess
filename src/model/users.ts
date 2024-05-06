@@ -7,6 +7,7 @@ interface Movie {
     genre:string,
     id:string
     dateRelease:string,
+    average:number
 }
 
 type user= {
@@ -27,6 +28,7 @@ const schema= new Schema<user>({
         genre: { type: String, required: true },
         id: { type: String ,required: true},
         dateRelease: { type: String, required: true },
+        average: { type: Number, required: true }
     }]
 })
 

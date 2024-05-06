@@ -50,7 +50,7 @@ export const loginUser=async(res:Response,email:string,password:string)=> {
     }
 }
 
-export const movieDataSave=async(res:Response,email:string,movieName:string,movieImage:string,overview:string,movieGenres:string,id:string,releaseDate:string)=> {
+export const movieDataSave=async(res:Response,email:string,movieName:string,movieImage:string,overview:string,movieGenres:string,id:string,releaseDate:string,average:number)=> {
     try {
         const userExists= await users.findOne({email:email})
         
@@ -64,6 +64,7 @@ export const movieDataSave=async(res:Response,email:string,movieName:string,movi
                         genre: movieGenres,
                         id: id,
                         dateRelease: releaseDate,
+                        average: average
                     }
                 }
             })
@@ -79,6 +80,7 @@ export const movieDataSave=async(res:Response,email:string,movieName:string,movi
                                 genre: movieGenres,
                                 id: id,
                                 dateRelease: releaseDate,
+                                average:average
                                 }
                             }
                         }
