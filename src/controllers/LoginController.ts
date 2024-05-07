@@ -9,6 +9,6 @@ export const userLogin=async (req:Request, res:Response)=> {
         await loginUser(res,email,password);
     }
     else {
-        res.json({message:"Preencha os campos para prosseguir"})
+        return res.json({message:"Preencha os campos para prosseguir"})
     }
 }

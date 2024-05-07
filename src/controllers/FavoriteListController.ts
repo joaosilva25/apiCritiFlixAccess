@@ -8,7 +8,7 @@ export const favoriteList=async (req:Request,res:Response)=> {
         await movieDataSave(res,email,movieTitle,movieImage,overview,genre,id,dataRelease,average);
     }
     else {
-        res.json({message:"Erro inesperado"})
+        return res.json({message:"Erro inesperado"})
     }
 
 }

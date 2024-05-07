@@ -9,7 +9,7 @@ export const userData=async(req:Request,res:Response)=> {
         await userShow(res,email)
     }
     else {
-        res.json({message:'preencha o email para prosseguir' })
+        return res.json({message:'preencha o email para prosseguir' })
     }
 
 }

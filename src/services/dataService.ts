@@ -1,61 +1,55 @@
-import {Response,Request} from 'express'
-import users from '../model/users'
-import bcrypt from 'bcryptjs'
+import { Response } from 'express';
+import users from '../model/users';
+import bcrypt from 'bcryptjs';
 
-
-
-export const registerUser=async(res:Response,userName:string,email:string,password:string)=> {
+export const registerUser = async (res: Response, userName: string, email: string, password: string) => {
     try {
-        const userExists= await users.findOne({email:email,userName:userName})
+        const userExists = await users.findOne({ email: email, userName: userName });
 
-        const hashPass=bcrypt.hashSync(password,10)
+        const hashPass = bcrypt.hashSync(password, 10);
 
-        if(!userExists) {
+        if (!userExists) {
             try {
-                const createUser = await users.create({userName:userName,email:email,password:hashPass})
-                res.json({message:'OK'})
+                await users.create({ userName: userName, email: email, password: hashPass });
+                return res.status(200).json({ message: 'OK' });
+            } catch (error) {
+                return res.status(500).json({ error: "Erro na criação do usuário" });
             }
-            catch (error) {
-                res.json({error:"Erro na criação do usuário"})
-            }
-        }
-        else {
-            res.json({message:'Usuário já existe'})
+        } else {
+            return res.status(400).json({ message: 'Usuário já existe' });
         }
     }
     catch (error) {
-        res.json({message:'Erro inesperado'})
+        return res.status(500).json({ message: 'Erro inesperado' });
     }
-}
+};
 
-export const loginUser=async(res:Response,email:string,password:string)=> {
+export const loginUser = async (res: Response, email: string, password: string) => {
     try {
-        const userExists= await users.findOne({email:email})
+        const userExists = await users.findOne({ email: email });
 
-        if(userExists) {
-            const paswordCompare=await bcrypt.compare(password,userExists.password)
-            if(paswordCompare) {
-                res.json({userExists,message:"OK"})
+        if (userExists) {
+            const paswordCompare = await bcrypt.compare(password, userExists.password);
+            if (paswordCompare) {
+                return res.status(200).json({ userExists, message: "OK" });
+            } else {
+                return res.status(401).json({ message: 'Senha incorreta' });
             }
-            else {
-                res.json({message:'Senha incorreta'})
-            }
-        }
-        else {
-            res.json({message:'Usuário não registrado'})
+        } else {
+            return res.status(404).json({ message: 'Usuário não registrado' });
         }
     }
-    catch(error) {
-        res.json({message:'Erro inesperado com login'})
+    catch (error) {
+        return res.status(500).json({ message: 'Erro inesperado com login' });
     }
-}
+};
 
-export const movieDataSave=async(res:Response,email:string,movieName:string,movieImage:string,overview:string,movieGenres:string,id:string,releaseDate:string,average:number)=> {
+export const movieDataSave = async (res: Response, email: string, movieName: string, movieImage: string, overview: string, movieGenres: string, id: string, releaseDate: string, average: number) => {
     try {
-        const userExists= await users.findOne({email:email})
-        
-        if(userExists) {
-            const movieAlreadyInDB=await users.findOne({  
+        const userExists = await users.findOne({ email: email });
+
+        if (userExists) {
+            const movieAlreadyInDB = await users.findOne({
                 myList: {
                     $elemMatch: {
                         title: movieName,
@@ -67,56 +61,48 @@ export const movieDataSave=async(res:Response,email:string,movieName:string,movi
                         average: average
                     }
                 }
-            })
-                if(!movieAlreadyInDB) {
-                    const saveMovieList=await users.updateOne(
-                        {email:email}, 
-                        {
-                            $push: {
-                                myList: {
+            });
+            if (!movieAlreadyInDB) {
+                await users.updateOne(
+                    { email: email },
+                    {
+                        $push: {
+                            myList: {
                                 title: movieName,
                                 poster: movieImage,
                                 overview: overview,
                                 genre: movieGenres,
                                 id: id,
                                 dateRelease: releaseDate,
-                                average:average
-                                }
+                                average: average
                             }
                         }
-                )
-                    
-                    if (saveMovieList) {
-                        return res.json({message:'Salvo nos favoritos'})
                     }
-                }
-                else {
-                    return res.json({message:"Já salvo na lista de favoritos"})
-                }
-        }
-        else {
-            res.json({message:"Usuário não existe"})
-        }
-
-    }
-    catch(error) {
-        res.json({message:'Erro inesperado'})
-    }
-}
-
-
-export const userShow=async(res:Response,email:string)=> {
-    try {
-        const userExists=await users.findOne({email:email})
-
-        if(userExists) {
-            res.json({userExists})
-        }
-        else {
-            res.json({message:"Usuário não encontrado"})
+                );
+                return res.status(200).json({ message: 'Adicionado' });
+            } else {
+                return res.status(409).json({ message: "Já salvo" });
+            }
+        } else {
+            return res.status(404).json({ message: "Erro Inesperado" });
         }
     }
     catch (error) {
-        res.json({message:'Erro inesperado'})
+        return res.status(500).json({ message: 'Erro inesperado' });
     }
-}
+};
+
+export const userShow = async (res: Response, email: string) => {
+    try {
+        const userExists = await users.findOne({ email: email });
+
+        if (userExists) {
+            return res.status(200).json({ userExists });
+        } else {
+            return res.status(404).json({ message: "Usuário não encontrado" });
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ message: 'Erro inesperado' });
+    }
+};
