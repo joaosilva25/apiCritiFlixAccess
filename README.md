@@ -12,3 +12,14 @@
 <p><strong>MongoDB Atlas</strong></p>
 <p><strong>Express</strong></p>
 <p><strong>Typescript</strong></p>
+
+
+<h1>AUTOR</h1>
+<p>João Vitor da Silva Pinto</p>
+
+<p>Linkedin:</p>
+http://www.linkedin.com/in/joaovitordasilvap/
+
+
+<p>Portifolio:</p>
+https://joaosilva25.github.io/Portifolio/
